@@ -10,8 +10,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         initDrawer();
     }
 
-    public void setFragmentList(IFragmentList fragment){
+    public void setFragmentList(IFragmentList fragment) {
         fragmentList = fragment;
     }
 
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(searchText, query, Snackbar.LENGTH_LONG).show();
                 return true;
             }
+
             // Реагирует на нажатие каждой клавиши
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -128,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_add){
+        if (id == R.id.action_add) {
             fragmentList.addItem("New element");
             return true;
         }
 
-        if (id == R.id.action_clear){
+        if (id == R.id.action_clear) {
             fragmentList.clearItems();
             return true;
         }
