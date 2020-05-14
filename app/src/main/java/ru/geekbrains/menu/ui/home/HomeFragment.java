@@ -66,12 +66,16 @@ public class HomeFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.add_context:
+                adapter.addItem(String.format("New element %d", adapter.getItemCount()));
                 return true;
             case R.id.update_context:
+                adapter.updateItem(String.format("Updated element %d", adapter.getMenuPosition()), adapter.getMenuPosition());
                 return true;
             case R.id.remove_context:
+                adapter.removeItem(adapter.getMenuPosition());
                 return true;
             case R.id.clear_context:
+                adapter.clearItems();
                 return true;
         }
         return super.onContextItemSelected(item);
