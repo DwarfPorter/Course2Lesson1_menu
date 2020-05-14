@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -96,6 +97,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        // Поиск пункта меню поиска
+        MenuItem search = menu.findItem(R.id.action_search);
+        // Строка поиска
+        final SearchView searchText = (SearchView) search.getActionView();
+        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // Реагирует на конец ввода поиска
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Snackbar.make(searchText, query, Snackbar.LENGTH_LONG).show();
+                return true;
+            }
+            // Реагирует на нажатие каждой клавиши
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
         return true;
     }
 
