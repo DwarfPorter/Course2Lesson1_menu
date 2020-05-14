@@ -1,6 +1,8 @@
 package ru.geekbrains.menu;
 
+import android.app.Fragment;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -8,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,9 +19,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import ru.geekbrains.menu.ui.home.HomeFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private IFragmentList fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initFAB();
         initDrawer();
+    }
+
+    public void setFragmentList(IFragmentList fragment){
+        fragmentList = fragment;
     }
 
     private void initDrawer() {
@@ -47,10 +57,33 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(final View view) {
+                PopupMenu menu = new PopupMenu(MainActivity.this, view);
+                getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
+                menu.getMenu().findItem(R.id.update_popup).setVisible(false);
+                menu.getMenu().add(0, 123456, 12, "Menu item added");
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        switch (id) {
+                            case R.id.add_popup:
+                                fragmentList.addItem("New element");
+                                return true;
+                            case R.id.clear_popup:
+                                fragmentList.clearItems();
+                                return true;
+                            case 123456:
+                                Snackbar.make(view, "Menu item added - clicked", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+                menu.show();
             }
+
         });
     }
 
