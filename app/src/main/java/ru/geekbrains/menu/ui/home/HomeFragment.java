@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,8 @@ import ru.geekbrains.menu.IFragmentList;
 import ru.geekbrains.menu.ListAdapter;
 import ru.geekbrains.menu.MainActivity;
 import ru.geekbrains.menu.R;
+
+import static androidx.navigation.Navigation.findNavController;
 
 public class HomeFragment extends Fragment implements IFragmentList {
 
@@ -63,6 +67,18 @@ public class HomeFragment extends Fragment implements IFragmentList {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_send){
+            Bundle bundle = new Bundle();
+            bundle.putString("arg", "data");
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.action_nav_home_to_nav_gallery, bundle);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
